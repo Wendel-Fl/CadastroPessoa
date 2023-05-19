@@ -6,14 +6,14 @@
 
 typedef struct no {
    char * name;
-   struct no *esq, *dir;
+   struct no *esquerda, *direita;
    int altura;
 } No;
 
 No* novoNo(char * name);
 int maior(int a, int b);
-int alturaNo(No *no);
-int fatorBalanceamento(No *no);
+int noAltura(No *no);
+int fatorBl(No *no);
 No* rotacaoEsquerda(No* raiz);
 No* rotacaoDireita(No* raiz);
 No* rotacaoDireitaEsquerda(No *raiz);
@@ -35,8 +35,8 @@ No* novoNo(char * name) {
    novo->name = (char *) malloc(strlen(name)+1);
    if (novo) {
       strcpy(novo->name, name);
-      novo->esq = NULL;
-      novo->dir = NULL;
+      novo->esquerda = NULL;
+      novo->direita = NULL;
       novo->altura = 0;
    } else {
       printf("Erro ao alocar memória!\n");
@@ -55,7 +55,7 @@ int maior(int a, int b) {
 }
 
 // Retorna a altura de um nó ou -1 caso ele seja null
-int alturaNo(No *no) {
+int noAltura(No *no) {
    if (no == NULL) {
       return -1;
    } else {
@@ -64,9 +64,9 @@ int alturaNo(No *no) {
 }
 
 // Calcula e retorna o fator de balanceamento de um nó
-int fatorBalanceamento(No *no) {
-   if (no) {
-      return alturaNo(no->esq) - alturaNo(no->dir);
+int fatorBl(No *noArv) {
+   if (noArv) {
+      return noAltura(noArv->esquerda) - noAltura(noArv->direita);
    } else {
       return 0;
    }
@@ -76,14 +76,14 @@ int fatorBalanceamento(No *no) {
 No* rotacaoEsquerda(No* raiz) {
    No *aux, *filho; 
    
-   aux = raiz->dir;
-   filho = aux->esq;
+   aux = raiz->direita;
+   filho = aux->esquerda;
 
-   aux->esq = raiz;
-   raiz->dir = filho;
+   aux->esquerda = raiz;
+   raiz->direita = filho;
 
-   raiz->altura = maior(alturaNo(raiz->esq), alturaNo(raiz->dir)) + 1;
-   aux->altura = maior(alturaNo(aux->esq), alturaNo(aux->dir)) + 1;
+   raiz->altura = maior(noAltura(raiz->esquerda), noAltura(raiz->direita)) + 1;
+   aux->altura = maior(noAltura(aux->esquerda), noAltura(aux->direita)) + 1;
 
    // retorna a nova raiz
    return aux;
@@ -93,14 +93,14 @@ No* rotacaoEsquerda(No* raiz) {
 No* rotacaoDireita(No* raiz) {
    No *aux, *filho; 
    
-   aux = raiz->esq;
-   filho = aux->dir;
+   aux = raiz->esquerda;
+   filho = aux->direita;
 
-   aux->dir = raiz;
-   raiz->esq = filho;
+   aux->direita = raiz;
+   raiz->esquerda = filho;
 
-   raiz->altura = maior(alturaNo(raiz->esq), alturaNo(raiz->dir)) + 1;
-   aux->altura = maior(alturaNo(aux->esq), alturaNo(aux->dir)) + 1;
+   raiz->altura = maior(noAltura(raiz->esquerda), noAltura(raiz->direita)) + 1;
+   aux->altura = maior(noAltura(aux->esquerda), noAltura(aux->direita)) + 1;
 
    // retorna a nova raiz
    return aux;
@@ -108,13 +108,13 @@ No* rotacaoDireita(No* raiz) {
 
 // Função para rotação Direita Esquerda
 No* rotacaoDireitaEsquerda(No *raiz) {
-   raiz->dir = rotacaoDireita(raiz->dir);
+   raiz->direita = rotacaoDireita(raiz->direita);
    return rotacaoEsquerda(raiz);
 }
 
 // Função para rotação Esquerda Direita
 No* rotacaoEsquerdaDireita(No *raiz) {
-   raiz->esq = rotacaoEsquerda(raiz->esq);
+   raiz->esquerda = rotacaoEsquerda(raiz->esquerda);
    return rotacaoDireita(raiz);
 }
 
@@ -123,22 +123,22 @@ No* rotacaoEsquerdaDireita(No *raiz) {
  * Recebe o nó que está desbalanceado e retorna a nova raiz após o balanceamento
 */
 No* balancear(No *raiz) {
-   int fb = fatorBalanceamento(raiz);
+   int fb = fatorBl(raiz);
 
    // Rotação à esquerda
-   if (fb < -1 && fatorBalanceamento(raiz->dir) <= 0)
+   if (fb < -1 && fatorBl(raiz->direita) <= 0)
       raiz = rotacaoEsquerda(raiz);
    
    // Rotação à direita
-   else if (fb > 1 && fatorBalanceamento(raiz->esq) >= 0)
+   else if (fb > 1 && fatorBl(raiz->esquerda) >= 0)
       raiz = rotacaoDireita(raiz);
    
    // Rotação dupla à esquerda
-   else if (fb > 1 && fatorBalanceamento(raiz->esq) < 0)
+   else if (fb > 1 && fatorBl(raiz->esquerda) < 0)
       raiz = rotacaoEsquerdaDireita(raiz);
    
    // Rotação dupla à direita
-   else if (fb < -1 && fatorBalanceamento(raiz->dir) > 0)
+   else if (fb < -1 && fatorBl(raiz->direita) > 0)
       raiz = rotacaoDireitaEsquerda(raiz);
 
    return raiz;
@@ -159,16 +159,16 @@ No* inserir(No *raiz, char * nome){
    }
    
     if (strcmp(raiz->name, nome) > 0) {
-        raiz->esq = inserir(raiz->esq, nome);
+        raiz->esquerda = inserir(raiz->esquerda, nome);
     } else if (strcmp(raiz->name, nome) < 0) {
-        raiz->dir = inserir(raiz->dir, nome);
+        raiz->direita = inserir(raiz->direita, nome);
     } else {
         printf("\nInsercao nao realizada\nO elemento %s ja existe na arvore\n", nome);
     
    }
 
    // Recalcula a altura de todos os nós entre a raiz e o novo nó inserido
-   raiz->altura = maior(alturaNo(raiz->esq), alturaNo(raiz->dir)) + 1;
+   raiz->altura = maior(noAltura(raiz->esquerda), noAltura(raiz->direita)) + 1;
 
    // Verifica a necessidade de rebalancear a árvore
    raiz = balancear(raiz);
@@ -179,9 +179,9 @@ No* inserir(No *raiz, char * nome){
 
 void inorder(No *raiz) {
    if (raiz) {
-      inorder(raiz->esq);
+      inorder(raiz->esquerda);
       printf("%s\n", raiz->name);
-      inorder(raiz->dir);
+      inorder(raiz->direita);
    }
 }
 
@@ -190,7 +190,7 @@ void imprimir(No *raiz, int nivel) {
    int i;
    
    if (raiz) {
-      imprimir(raiz->dir, nivel + 1);
+      imprimir(raiz->direita, nivel + 1);
       printf("\n\n");
       
       for (i = 0; i < nivel; i++) {
@@ -198,7 +198,7 @@ void imprimir(No *raiz, int nivel) {
       }
       
       printf("%s\n", raiz->name);
-      imprimir(raiz->esq, nivel + 1);
+      imprimir(raiz->esquerda, nivel + 1);
    }
 }
 
