@@ -22,7 +22,7 @@ No* LoadData(No* raiz, int ordenarPor){
 // Funcao que imprime o nome do App
 void royalty(){
 	printf("==============================\n\n\n");
-	printf("     UM APP SEM NOME AINDA\n\n\n");
+	printf("  BANCO DE DADOS DA CIDADE X\n\n\n");
 	printf("==============================\n\n\n");
 }
 
@@ -81,7 +81,8 @@ void listDataMenu(No * raiz){
          checkDataMenu(raiz, 0);
          return;
       case 0:
-         return;
+         shutdown();
+         break;
       default:
          printf("Opcao invalida!\n");
          listDataMenu(raiz);
@@ -100,20 +101,27 @@ void checkDataMenu(No * raiz, int ordenarPor){
    char s1[20], s2[20], s3[20];
    memset(target, 0, 60);
    while(option != 1 && option != 2 && option != 3) scanf("%d", &option);
-   if(option==1){
-      if(ordenarPor==1) printf("Digite o CPF que deseja buscar:\n");
-      else if(ordenarPor==2) printf("Digite o CEP que deseja buscar:\n");
-      else printf("Digite o nome que deseja buscar:\n");
-      if(ordenarPor==1 || ordenarPor==2) scanf("%s", target);
-      else if(option==2){
+   if (option==1) {
+      if (ordenarPor==1) {
+         printf("Digite o CPF que deseja buscar:\n");
+         scanf("%s", target);
+      } else if (ordenarPor==2) {
+         printf("Digite o CEP que deseja buscar:\n");
+         scanf("%s", target);
+      } else {
+         printf("Digite o nome que deseja buscar:\n");
          scanf("%s %s %s", s1, s2, s3);
          joinstrings(s1, s2, s3, target);
-      } else {
-         mainMenu(raiz, ordenarPor);
       }
       search(raiz, target, ordenarPor);
+      if (raiz == NULL) {
+         checkDataMenu(raiz, ordenarPor);
+      }
+   } else if (option==2) {
+      listDataMenu(raiz);  
+   } else {
+      mainMenu(raiz, ordenarPor);
    }
-   if(option==2) listDataMenu(raiz);
    return;
 }
 
@@ -136,7 +144,8 @@ void mainMenu(No * raiz, int ordenarPor){
             novoCadastro(raiz, ordenarPor);
             break;
          case 0:
-            return;
+            shutdown();
+            break;
          default:
             printf("Opcao invalida!\n");
             mainMenu(raiz, ordenarPor);

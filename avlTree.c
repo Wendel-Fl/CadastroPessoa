@@ -48,6 +48,15 @@ int maior(int a, int b) {
    return (a > b) ? a : b;
 }
 
+/**
+ * Retorna o menor dentre dois valores
+ * a, b -> altura de dois nós da árvore
+*/
+int menor(int a, int b) {
+   // if ternário -> (condição) ? verdadeiro : falso
+   return (a < b) ? a : b;
+}
+
 // Retorna a altura de um nó ou -1 caso ele seja null
 int noAltura(No *no) {
    if (no == NULL) {
@@ -232,25 +241,25 @@ void posorder(No *raiz) {
 }
 
 void joinstrings(char * s1, char * s2, char * s3, char * result){
-    int i;
-    for(i=0; i<strlen(s1);i++){
-        memset(&result[i], s1[i], 1);
-    }
-    for(i=0; i<strlen(s2);i++){
-        memset(&result[i+strlen(s1)], s2[i], 1);
-    }
-    for(i=0; i<strlen(s3);i++){
-        memset(&result[i+strlen(s1)+strlen(s2)], s3[i], 1);
-    }
+   int i;
+   for(i=0; i<strlen(s1);i++){
+      memset(&result[i], s1[i], 1);
+   }
+   for(i=0; i<strlen(s2);i++){
+      memset(&result[i+strlen(s1)], s2[i], 1);
+   }
+   for(i=0; i<strlen(s3);i++){
+      memset(&result[i+strlen(s1)+strlen(s2)], s3[i], 1);
+   }
 }
 
 void search(No * raiz,char * target, int ordenarPor) {
    if (raiz == NULL) {
       printf("Nao foi possivel achar a chave %s.\n", target);
-      checkDataMenu(raiz, ordenarPor);
+      return;
    }
    
-   if(ordenarPor == 1){
+   if (ordenarPor == 1){
       if (strcmp(raiz->CPF, target) > 0) {
          search(raiz->esquerda, target, ordenarPor);
       } else if (strcmp(raiz->CPF, target) < 0) {
@@ -261,7 +270,7 @@ void search(No * raiz,char * target, int ordenarPor) {
          return;
       }
    }
-   else if(ordenarPor == 2){
+   else if (ordenarPor == 2){
       if (strcmp(raiz->CEP, target) > 0) {
          search(raiz->esquerda, target, ordenarPor);
       } else if (strcmp(raiz->CEP, target) < 0) {
@@ -272,7 +281,7 @@ void search(No * raiz,char * target, int ordenarPor) {
          return;
       }
    }
-   else{
+   else {
       if (strcmp(raiz->name, target) > 0) {
          search(raiz->esquerda, target, ordenarPor);
       } else if (strcmp(raiz->name, target) < 0) {
