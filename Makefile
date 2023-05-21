@@ -6,13 +6,10 @@ OPTIONS = -Wall -Wpedantic -Wno-unused-result -O0 -g
 # -O0: nao otimiza o codigo ao compilar
 # -g:  prepara o terreno para que o gdb possa encontrar bugs
 
-all: Projeto
+all: projeto
 
-Projeto: app.h avlTree.h avlTree.c app.c main.c
-	gcc $(STD) $(OPTIONS) avlTree.c app.c main.c -o Projeto
-
-run: Projeto
-	./Projeto
+projeto: app.h avlTree.h avlTree.c app.c main.c
+	gcc $(STD) $(OPTIONS) avlTree.c app.c main.c -o projeto
 
 clean:
-	rm -f Projeto
+	rm -f projeto
