@@ -1,33 +1,21 @@
+//cmd /c '.\main.exe < input.txt > output.txt'
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 
-#include "person.c"
+#include "avlTree.h"
+#include "app.h"
 
-typedef struct no {
+struct no {
    char * name;
    struct no *esquerda, *direita;
    char CPF[12];
    char CEP[9];
    int altura;
-} No;
-
-No* novoNo(char * name, char CPF[12], char CEP[9]);
-int maior(int a, int b);
-int noAltura(No *no);
-int fatorBl(No *no);
-No* rotacaoEsquerda(No* raiz);
-No* rotacaoDireita(No* raiz);
-No* rotacaoDireitaEsquerda(No *raiz);
-No* rotacaoEsquerdaDireita(No *raiz);
-No* balancear(No *raiz);
-No* inserir(No *raiz, char * nome, char * CPF, char * CEP, int ordenarPor);
-void joinstrings(char * s1, char * s2, char * s3, char * result);
-void preorder(No *raiz);
-void inorder(No *raiz);
-void posorder(No *raiz);
-void imprimir(No *raiz, int nivel);
+};
 
 /**
  * Função que cria um novo nó
@@ -73,7 +61,7 @@ int noAltura(No *no) {
 int fatorBl(No *noArv) {
    if (noArv) {
       return noAltura(noArv->esquerda) - noAltura(noArv->direita);
-   } else {
+   } else { 
       return 0;
    }
 }
@@ -243,22 +231,6 @@ void posorder(No *raiz) {
    }
 }
 
-void imprimir(No *raiz, int nivel) {
-   int i;
-   
-   if (raiz) {
-      imprimir(raiz->direita, nivel + 1);
-      printf("\n\n");
-      
-      for (i = 0; i < nivel; i++) {
-         printf("\t");
-      }
-      
-      printf("%s\n", raiz->name);
-      imprimir(raiz->esquerda, nivel + 1);
-   }
-}
-
 void joinstrings(char * s1, char * s2, char * s3, char * result){
     int i;
     for(i=0; i<strlen(s1);i++){
@@ -270,4 +242,45 @@ void joinstrings(char * s1, char * s2, char * s3, char * result){
     for(i=0; i<strlen(s3);i++){
         memset(&result[i+strlen(s1)+strlen(s2)], s3[i], 1);
     }
+}
+
+void search(No * raiz,char * target, int ordenarPor) {
+   if (raiz == NULL) {
+      printf("Nao foi possivel achar a chave %s.\n", target);
+      checkDataMenu(raiz, ordenarPor);
+   }
+   
+   if(ordenarPor == 1){
+      if (strcmp(raiz->CPF, target) > 0) {
+         search(raiz->esquerda, target, ordenarPor);
+      } else if (strcmp(raiz->CPF, target) < 0) {
+         search(raiz->direita, target, ordenarPor);
+      } else {
+         printf("\n%s:\n", target);
+         printf(" Nome: %s\n CPF: %s\n CEP: %s\n", raiz->name, raiz->CPF, raiz->CEP);
+         return;
+      }
+   }
+   else if(ordenarPor == 2){
+      if (strcmp(raiz->CEP, target) > 0) {
+         search(raiz->esquerda, target, ordenarPor);
+      } else if (strcmp(raiz->CEP, target) < 0) {
+         search(raiz->direita, target, ordenarPor);
+      } else {
+         printf("\n%s:\n", target);
+         printf(" Nome: %s\n CPF: %s\n CEP: %s\n", raiz->name, raiz->CPF, raiz->CEP);
+         return;
+      }
+   }
+   else{
+      if (strcmp(raiz->name, target) > 0) {
+         search(raiz->esquerda, target, ordenarPor);
+      } else if (strcmp(raiz->name, target) < 0) {
+         search(raiz->direita, target, ordenarPor);
+      } else {
+         printf("\n%s:\n", target);
+         printf(" Nome: %s\n CPF: %s\n CEP: %s\n", raiz->name, raiz->CPF, raiz->CEP);
+         return;
+      }
+   } 
 }

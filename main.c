@@ -1,9 +1,17 @@
 #include <locale.h>
 
-#include "app.c"
+#include "avlTree.h"
+#include "app.h"
 
 int main(){
-    setlocale(LC_ALL, "Portuguese");
-	runApp();
-	return 0;
+   int ordenarPor = 0;
+   ordenarPor = menuOrdenarPor();
+
+   setlocale(LC_ALL, "Portuguese");
+   No *raiz = NULL;
+   raiz = LoadData(raiz, ordenarPor);
+
+   mainMenu(raiz, ordenarPor);
+
+   return 1;
 }

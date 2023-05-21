@@ -14,7 +14,7 @@ int runTests() {
    while(scanf("%s %s %s", &s1, &s2, &s3) != EOF){
     memset(completa, 0, 45);
     joinstrings(s1, s2, s3, completa);
-    raiz = inserir(raiz, completa);
+    // raiz = inserir(raiz, completa);
    }
     inorder(raiz);
 }
