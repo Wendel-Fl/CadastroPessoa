@@ -1,3 +1,6 @@
+#ifndef AVL_TREE_H
+#define AVL_TREE_H
+
 typedef struct no No;
 
 No* novoNo(char * name, char CPF[12], char CEP[9]);
@@ -15,3 +18,5 @@ void preorder(No *raiz);
 void inorder(No *raiz);
 void posorder(No *raiz);
 void search(No * raiz,char * target, int ordenarPor);
+
+#endif // AVL_TREE_H

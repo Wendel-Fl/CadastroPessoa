@@ -93,20 +93,23 @@ void listDataMenu(No * raiz){
 void checkDataMenu(No * raiz, int ordenarPor){
    printf("\n\n1 - Buscar dados\n");
    printf("2 - Printar os dados\n");
+   printf("3 - Voltar ao menu anterior\n");
    printf("Digite a opcao:\n");
    int option = 0;
    char target[60];
    char s1[20], s2[20], s3[20];
    memset(target, 0, 60);
-   while(option != 1 && option != 2) scanf("%d", &option);
+   while(option != 1 && option != 2 && option != 3) scanf("%d", &option);
    if(option==1){
       if(ordenarPor==1) printf("Digite o CPF que deseja buscar:\n");
       else if(ordenarPor==2) printf("Digite o CEP que deseja buscar:\n");
       else printf("Digite o nome que deseja buscar:\n");
       if(ordenarPor==1 || ordenarPor==2) scanf("%s", target);
-      else{
+      else if(option==2){
          scanf("%s %s %s", s1, s2, s3);
          joinstrings(s1, s2, s3, target);
+      } else {
+         mainMenu(raiz, ordenarPor);
       }
       search(raiz, target, ordenarPor);
    }
