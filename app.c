@@ -9,7 +9,7 @@
 No *root;
 
 void royalty();
-void shutdown()
+void shutdown();
 void listDataMenu();
 void checkDataMenu();
 void mainMenu();
@@ -153,7 +153,7 @@ void runApp(){
 	printf("Desenvolvido por:\n");
 	printf("              -  Carlos Eduardo\n");
 	printf("              -  Gabrielle\n");
-	printf("              -  Jo„o Victor\n");
+	printf("              -  Jo√£o Victor\n");
 	printf("              -  Robert Martins\n");
 	printf("              -  Wendel Filho\n\n");
 	printf("------------------------------\n\n\n");
