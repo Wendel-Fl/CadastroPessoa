@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include "person.c"
 
 typedef struct no {
    char * name;
    struct no *esquerda, *direita;
+   char CPF[12];
+   char CEP[9];
    int altura;
 } No;
 
-No* novoNo(char * name);
+No* novoNo(char * name, char CPF[12], char CEP[9]);
 int maior(int a, int b);
 int noAltura(No *no);
 int fatorBl(No *no);
@@ -19,7 +22,7 @@ No* rotacaoDireita(No* raiz);
 No* rotacaoDireitaEsquerda(No *raiz);
 No* rotacaoEsquerdaDireita(No *raiz);
 No* balancear(No *raiz);
-No* inserir(No *raiz, char * name);
+No* inserir(No *raiz, char * nome, char * CPF, char * CEP, int ordenarPor);
 void joinstrings(char * s1, char * s2, char * s3, char * result);
 
 void inorder(No *raiz);
@@ -30,11 +33,13 @@ void imprimir(No *raiz, int nivel);
  * valor -> valor a ser inserido no nó
  * Retorna: o endereço do nó criado
 */
-No* novoNo(char * name) {
+No* novoNo(char * name, char CPF[12], char CEP[9]) {
    No *novo = malloc(sizeof(No));
    novo->name = (char *) malloc(strlen(name)+1);
    if (novo) {
       strcpy(novo->name, name);
+      strcpy(novo->CEP, CEP);
+      strcpy(novo->CPF, CPF);
       novo->esquerda = NULL;
       novo->direita = NULL;
       novo->altura = 0;
@@ -144,27 +149,64 @@ No* balancear(No *raiz) {
    return raiz;
 }
 
-
 /**
  * Insere um novo nó na árvore
  * raiz -> raiz da árvore
  * x -> valor a ser inserido
  * Retorno: endereço do novo nó ou nova raiz após o balanceamento
-*/
-No* inserir(No *raiz, char * nome){
-    
-   if (raiz == NULL) {
-      return novoNo(nome);
+ * @brief Inserir um novo nó na árvore
+ * 
+ * @param raiz raiz da árvore em que o nó será inserido
+ * @param nome nome da pessoa
+ * @param CPF cpf da pessoa
+ * @param CEP cep da pessoa
+ * @param ordenarPor Fator que decidirá como ordenaremos a árvore. Qualquer int diferente de 1 e 2: NOME. 1: CPF. 2: CEP
+ * @return No* 
+ */
+No* inserir(No *raiz, char * nome, char * CPF, char * CEP, int ordenarPor){
+   if(ordenarPor == 1){
+      if (raiz == NULL) {
+         return novoNo(nome, CPF, CEP);
+      }
+      if (strcmp(raiz->CPF, CPF) > 0) {
+         raiz->esquerda = inserir(raiz->esquerda, nome, CPF, CEP, ordenarPor);
+      } else if (strcmp(raiz->CPF, CPF) < 0) {
+         raiz->direita = inserir(raiz->direita, nome, CPF, CEP, ordenarPor);
+      } else {
+         strcpy(raiz->name, nome);
+         strcpy(raiz->CEP, CEP);
+         strcpy(raiz->CPF, CPF);
+      
+      }
 
    }
-   
-    if (strcmp(raiz->name, nome) > 0) {
-        raiz->esquerda = inserir(raiz->esquerda, nome);
-    } else if (strcmp(raiz->name, nome) < 0) {
-        raiz->direita = inserir(raiz->direita, nome);
-    } else {
-        printf("\nInsercao nao realizada\nO elemento %s ja existe na arvore\n", nome);
-    
+   else if(ordenarPor == 2){
+      if (raiz == NULL) {
+         return novoNo(nome, CPF, CEP);
+      }
+      if (strcmp(raiz->CEP, CEP) > 0) {
+         raiz->esquerda = inserir(raiz->esquerda, nome, CPF, CEP, ordenarPor);
+      } else if (strcmp(raiz->CEP, CEP) < 0) {
+         raiz->direita = inserir(raiz->direita, nome, CPF, CEP, ordenarPor);
+      } else {
+         strcpy(raiz->name, nome);
+         strcpy(raiz->CEP, CEP);
+         strcpy(raiz->CPF, CPF);
+      }
+   }
+   else{
+      if (raiz == NULL) {
+         return novoNo(nome, CPF, CEP);
+      }
+      if (strcmp(raiz->name, nome) > 0) {
+         raiz->esquerda = inserir(raiz->esquerda, nome, CPF, CEP, ordenarPor);
+      } else if (strcmp(raiz->name, nome) < 0) {
+         raiz->direita = inserir(raiz->direita, nome, CPF, CEP, ordenarPor);
+      } else {
+         strcpy(raiz->name, nome);
+         strcpy(raiz->CEP, CEP);
+         strcpy(raiz->CPF, CPF);
+      }
    }
 
    // Recalcula a altura de todos os nós entre a raiz e o novo nó inserido
@@ -176,11 +218,10 @@ No* inserir(No *raiz, char * nome){
    return raiz;
 }
 
-
 void inorder(No *raiz) {
    if (raiz) {
       inorder(raiz->esquerda);
-      printf("%s\n", raiz->name);
+      printf("Nome: %s CEP: %s CPF: %s\n", raiz->name, raiz->CEP, raiz->CPF);
       inorder(raiz->direita);
    }
 }

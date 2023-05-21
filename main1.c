@@ -184,8 +184,11 @@ No* balancear(No *raiz) {
    return raiz;
 }
 
-
 /**
+ * Insere um novo nó na árvore
+ * raiz -> raiz da árvore
+ * x -> valor a ser inserido
+ * Retorno: endereço do novo nó ou nova raiz após o balanceamento
  * @brief Inserir um novo nó na árvore
  * 
  * @param raiz raiz da árvore em que o nó será inserido
@@ -249,7 +252,6 @@ No* inserir(No *raiz, char * nome, char * CPF, char * CEP, int ordenarPor){
 
    return raiz;
 }
-
 
 void inorder(No *raiz) {
    if (raiz) {
