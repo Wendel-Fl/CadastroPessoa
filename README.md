@@ -42,5 +42,12 @@ Sinta-se à vontade para contribuir com este projeto, fazendo melhorias ou adici
 
 Se você encontrou algum bug ou tem alguma sugestão, por favor, abra uma issue.
 
+## Integrantes do grupo
+- Carlos Eduardo Chiarella Braga
+- Gabrielle Siqueira Moreira Leão
+- João Victor Rosa Couto e Silva
+- Robert Cardoso Cantares Martins
+- Wendel Márcio de Oliveira Filho
+
 ### Observações
 O arquivo input.txt é muito grande para ser colocado no repositório. Por isso, ele foi compactado em input.zip. Para executar o programa com o arquivo input.txt, basta descompactar o arquivo input.zip e executar o programa normalmente.
